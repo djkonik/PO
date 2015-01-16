@@ -11,16 +11,16 @@
             maxActive="20"
             maxIdle="3"
             minIdle="1"
-            maxWait="5000"
-            username="postgres"
-            password="postgres"
-            driverClassName="org.postgresql.Driver"
+            maxWait="10000"
+            username="dejotka"
+            password="qwerty"
+            driverClassName="com.mysql.jdbc.Driver"
             validationQuery="SELECT 'OK'"
             testWhileIdle="true"
             testOnBorrow="true"
             numTestsPerEvictionRun="5"
             timeBetweenEvictionRunsMillis="30000"
             minEvictableIdleTimeMillis="60000"
-            url="jdbc:postgresql://localhost:5432/uaiContacts" />
+            url="jdbc:mysql://db4free.net:3306/testpo" />
 
 </Context>
