@@ -6,13 +6,14 @@
     <h2>
         <p class="text-center">
             <spring:message code='rozwiazania.header'/>
-            <a href="#searchContactsModal"
+            <a href="#"
+               ng-click="todo();"
                id="contactsHeaderButton"
                role="button"
                ng-class="{'': displaySearchButton == true, 'none': displaySearchButton == false}"
                title="<spring:message code="search"/>&nbsp;<spring:message code="contact"/>"
                class="btn btn-inverse" data-toggle="modal">
-                <i class="icon-search"></i>
+                <i class="icon-refresh"></i>
             </a>
         </p>
     </h2>
@@ -31,20 +32,6 @@
             <div id="divLoadingIcon" class="text-center">
                 <div class="icon-align-center loading"></div>
             </div>
-        </div>
-
-        <div ng-class="{'alert badge-inverse': displaySearchMessage == true, 'none': displaySearchMessage == false}">
-            <h4>
-                <p class="messageToUser"><i class="icon-info-sign"></i>&nbsp;{{page.searchMessage}}</p>
-            </h4>
-            <a href="#"
-               role="button"
-               ng-click="resetSearch();"
-               ng-class="{'': displaySearchMessage == true, 'none': displaySearchMessage == false}"
-               title="<spring:message code='search.reset'/>"
-               class="btn btn-inverse" data-toggle="modal">
-                <i class="icon-remove"></i> <spring:message code="search.reset"/>
-            </a>
         </div>
 
         <div ng-class="{'alert badge-inverse': displayMessageToUser == true, 'none': displayMessageToUser == false}">
@@ -84,20 +71,27 @@
                     <td class="tdContactsCentered">{{rozwiazanie.czyZatwierdzone}}</td>
                     <td class="width15">
                         <div class="text-center">
-                            <input type="hidden" value="{{contact.id}}"/>
-                            <a href="#updateContactsModal"
-                               ng-click="selectedContact(contact);"
+                            <input type="hidden" value="{{rozwiazanie.id}}"/>
+                            <a href="#detailsRozwiazaniaModal"
+                               ng-click="selectedRozwiazanie(rozwiazanie);"
                                role="button"
-                               title="<spring:message code="update"/>&nbsp;<spring:message code="contact"/>"
+                               title="<spring:message code="details"/>&nbsp;rozwiązania"
                                class="btn btn-inverse" data-toggle="modal">
-                                <i class="icon-pencil"></i>
+                                <i class="icon-search"></i>
                             </a>
-                            <a href="#deleteContactsModal"
-                               ng-click="selectedContact(contact);"
+                            <a href="#"
+                               ng-click="todo();"
                                role="button"
-                               title="<spring:message code="delete"/>&nbsp;<spring:message code="contact"/>"
+                               title="Przejdź do zadania"
                                class="btn btn-inverse" data-toggle="modal">
-                                <i class="icon-minus"></i>
+                                <i class="icon-file"></i>
+                            </a>
+                            <a href="#"
+                               ng-click="todo();"
+                               role="button"
+                               title="Zadaj pytanie"
+                               class="btn btn-inverse" data-toggle="modal">
+                                <i class="icon-comment"></i>
                             </a>
                         </div>
                     </td>
@@ -141,18 +135,18 @@
         </div>
         <div ng-class="{'text-center': displayCreateContactButton == true, 'none': displayCreateContactButton == false}">
             <br/>
-            <a href="#addContactsModal"
+            <a href="#"
                role="button"
-               ng-click="resetContact();"
+               ng-click="todo();"
                title="<spring:message code='create'/>&nbsp;<spring:message code='contact'/>"
                class="btn btn-inverse"
                data-toggle="modal">
                 <i class="icon-plus"></i>
-                &nbsp;&nbsp;<spring:message code="create"/>&nbsp;<spring:message code="contact"/>
+                &nbsp;&nbsp;<spring:message code="add"/>&nbsp;<spring:message code="rozwiazanie"/>
             </a>
         </div>
 
-        <jsp:include page="dialogs/contactsDialogs.jsp"/>
+        <jsp:include page="dialogs/rozwiazaniaDialogs.jsp"/>
 
     </div>
 </div>

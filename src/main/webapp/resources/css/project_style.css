@@ -183,6 +183,11 @@ body {
     height: 300px;
 }
 
+.detailsDialog {
+    width: 90%;
+    height: 90%;
+}
+
 .displayInLine {
     display: inline;
 }

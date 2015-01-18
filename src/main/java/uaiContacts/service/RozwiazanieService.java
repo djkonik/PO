@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,16 +30,7 @@ public class RozwiazanieService {
 
         return buildResult(result);
     }
-
-    public void save(Rozwiazanie rozwiazanie) {
-        rozwiazanieRepository.save(rozwiazanie);
-    }
-
-    @Secured("ROLE_ADMIN")
-    public void delete(int rozwiazanieId) {
-        rozwiazanieRepository.delete(rozwiazanieId);
-    }
-
+/*
     @Transactional(readOnly = true)
     public RozwiazanieListVO findByJezykLike(int page, int maxResults, String jezyk) {
         Page<Rozwiazanie> result = executeQueryFindByName(page, maxResults, jezyk);
@@ -51,6 +41,18 @@ public class RozwiazanieService {
         }
 
         return buildResult(result);
+    }*/
+    
+    @Transactional(readOnly = true)
+    public RozwiazanieListVO findByAutorLike(int page, int maxResults, int autor) {
+        Page<Rozwiazanie> result = executeQueryFindByAutor(page, maxResults, autor);
+
+        if(shouldExecuteSameQueryInLastPage(page, result)){
+            int lastPage = result.getTotalPages() - 1;
+            result = executeQueryFindByAutor(lastPage, maxResults, autor);
+        }
+
+        return buildResult(result);
     }
 
     private boolean shouldExecuteSameQueryInLastPage(int page, Page<Rozwiazanie> result) {
@@ -58,23 +60,30 @@ public class RozwiazanieService {
     }
 
     private Page<Rozwiazanie> executeQueryFindAll(int page, int maxResults) {
-        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByJezykASC());
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaASC());
 
         return rozwiazanieRepository.findAll(pageRequest);
     }
 
-    private Sort sortByJezykASC() {
-        return new Sort(Sort.Direction.ASC, "jezyk");
+    private Sort sortByCzasPrzeslaniaASC() {
+        return new Sort(Sort.Direction.ASC, "czasPrzeslania");
     }
 
     private RozwiazanieListVO buildResult(Page<Rozwiazanie> result) {
         return new RozwiazanieListVO(result.getTotalPages(), result.getTotalElements(), result.getContent());
     }
-
+/*
     private Page<Rozwiazanie> executeQueryFindByName(int page, int maxResults, String jezyk) {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByJezykASC());
 
         return rozwiazanieRepository.findByJezykLike(pageRequest, "%" + jezyk + "%");
+    }*/
+    
+    //TODO - 
+    private Page<Rozwiazanie> executeQueryFindByAutor(int page, int maxResults, int autor) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaASC());
+
+        return rozwiazanieRepository.findByAutorLike(pageRequest, autor);
     }
 
     private boolean isUserAfterOrOnLastPage(int page, Page<Rozwiazanie> result) {
