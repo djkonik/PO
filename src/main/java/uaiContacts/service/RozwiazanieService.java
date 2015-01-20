@@ -60,13 +60,13 @@ public class RozwiazanieService {
     }
 
     private Page<Rozwiazanie> executeQueryFindAll(int page, int maxResults) {
-        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaASC());
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaDESC());
 
         return rozwiazanieRepository.findAll(pageRequest);
     }
 
-    private Sort sortByCzasPrzeslaniaASC() {
-        return new Sort(Sort.Direction.ASC, "czasPrzeslania");
+    private Sort sortByCzasPrzeslaniaDESC() {
+        return new Sort(Sort.Direction.DESC, "czasPrzeslania");
     }
 
     private RozwiazanieListVO buildResult(Page<Rozwiazanie> result) {
@@ -81,7 +81,7 @@ public class RozwiazanieService {
     
     //TODO - 
     private Page<Rozwiazanie> executeQueryFindByAutor(int page, int maxResults, int autor) {
-        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaASC());
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaDESC());
 
         return rozwiazanieRepository.findByAutorLike(pageRequest, autor);
     }

@@ -19,6 +19,9 @@
     <definition name="rozwiazaniaList" extends="master.page">
         <put-attribute name="body" value="/protected/rozwiazania/rozwiazania.jsp"/>
     </definition>
+    <definition name="zadaniaList" extends="master.page">
+        <put-attribute name="body" value="/protected/zadania/zadania.jsp"/>
+    </definition>
     <definition name="login" extends="master.page">
         <put-attribute name="header" value=""/>
         <put-attribute name="footer" value=""/>
