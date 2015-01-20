@@ -28,9 +28,9 @@
     <div class="modal-body">
             <input type="hidden"
                    required
-                   ng-model="contact.id"
+                   ng-model="rozwiazanie.id"
                    name="id"
-                   value="{{contact.id}}"/>
+                   value="{{rozwiazanie.id}}"/>
             <div class="row">
                 <div class="span4">
                     <div class="input-append">

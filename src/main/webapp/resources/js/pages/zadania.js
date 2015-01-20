@@ -40,16 +40,7 @@ function zadaniaController($scope, $http) {
     $scope.populateTable = function (data) {
         if (data.pagesCount > 0) {
             $scope.state = 'list';
-            /*for (var i=0; i<data.zadania.length; i++) {
-            	data.zadania[i].czasPrzeslania = new Date(data.rozwiazania[i].czasPrzeslania).format("HH:MM:ss");
-            	if (data.zadania[i].czySprawdzone) {
-            		data.rozwiazadaniazania[i].czySprawdzone = "Sprawdzone"
-            		data.rozwiazania[i].czyZatwierdzone = data.rozwiazania[i].czyZatwierdzone?"Zatwierdzone":"Niezatwierdzone";
-            	} else {
-            		data.rozwiazania[i].czySprawdzone = "Oczekiwanie"
-            		data.rozwiazania[i].czyZatwierdzone = "-";
-            	}
-            }*/
+console.log(data);
 
             $scope.page = {source: data.zadania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalContacts : data.totalContacts};
 
@@ -135,12 +126,27 @@ function zadaniaController($scope, $http) {
 
     $scope.selectedZadanie = function (zadanie) {
         var selectedZadanie = angular.copy(zadanie);
+        
+        var url = $scope.url;
+        $scope.lastAction = 'list';
+
+        var config = {params: {page: $scope.pageToGet}};
+        $http.get(url, config)
+	        .success(function (data) {
+	            selectedZadanie.data = data;
+	        })
+	        .error(function () {
+	        	console.log('err');
+	        });
+        console.log(selectedZadanie);
         $scope.zadanie = selectedZadanie;
     }
 
     $scope.todo = function () {
     	alert('TODO');
     };
+    
+
 
 
     $scope.getZadanieList();

@@ -6,13 +6,14 @@
     <h2>
         <p class="text-center">
             <spring:message code='zadania.header'/>
-            <a href="#searchContactsModal"
+            <a href="#"
+               ng-click="getRozwiazanieList();"
                id="contactsHeaderButton"
                role="button"
                ng-class="{'': displaySearchButton == true, 'none': displaySearchButton == false}"
-               title="<spring:message code="search"/>&nbsp;<spring:message code="zadanie"/>"
+               title="<spring:message code="search"/>&nbsp;<spring:message code="contact"/>"
                class="btn btn-inverse" data-toggle="modal">
-                <i class="icon-search"></i>
+                <i class="icon-refresh"></i>
             </a>
         </p>
     </h2>
@@ -31,20 +32,6 @@
             <div id="divLoadingIcon" class="text-center">
                 <div class="icon-align-center loading"></div>
             </div>
-        </div>
-
-        <div ng-class="{'alert badge-inverse': displaySearchMessage == true, 'none': displaySearchMessage == false}">
-            <h4>
-                <p class="messageToUser"><i class="icon-info-sign"></i>&nbsp;{{page.searchMessage}}</p>
-            </h4>
-            <a href="#"
-               role="button"
-               ng-click="resetSearch();"
-               ng-class="{'': displaySearchMessage == true, 'none': displaySearchMessage == false}"
-               title="<spring:message code='search.reset'/>"
-               class="btn btn-inverse" data-toggle="modal">
-                <i class="icon-remove"></i> <spring:message code="search.reset"/>
-            </a>
         </div>
 
         <div ng-class="{'alert badge-inverse': displayMessageToUser == true, 'none': displayMessageToUser == false}">
@@ -75,23 +62,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="contact in page.source">
-                    <td class="tdContactsCentered">{{contact.name}}</td>
-                    <td class="tdContactsCentered">{{contact.email}}</td>
+                <tr ng-repeat="zadanie in page.source">
+                    <td class="tdContactsCentered">{{zadanie.numer}}</td>
+                    <td class="tdContactsCentered">{{zadanie.tytul}}</td>
                     <td class="width15">
                         <div class="text-center">
                             <input type="hidden" value="{{contact.id}}"/>
-                            <a href="#updateContactsModal"
-                               ng-click="selectedContact(contact);"
+                            <a href="#editZadaniaModal"
+                               ng-click="selectedZadanie(zadanie);"
                                role="button"
-                               title="<spring:message code="update"/>&nbsp;<spring:message code="contact"/>"
+                               title="Edytuj zadanie"
                                class="btn btn-inverse" data-toggle="modal">
                                 <i class="icon-pencil"></i>
                             </a>
-                            <a href="#deleteContactsModal"
-                               ng-click="selectedContact(contact);"
+                            <a href="#"
+                               ng-click="todo();"
                                role="button"
-                               title="<spring:message code="delete"/>&nbsp;<spring:message code="contact"/>"
+                               title="Usuń zadanie"
                                class="btn btn-inverse" data-toggle="modal">
                                 <i class="icon-minus"></i>
                             </a>
@@ -137,14 +124,14 @@
         </div>
         <div ng-class="{'text-center': displayCreateContactButton == true, 'none': displayCreateContactButton == false}">
             <br/>
-            <a href="#addContactsModal"
+            <a href="#"
                role="button"
-               ng-click="resetContact();"
+               ng-click="todo();"
                title="<spring:message code='create'/>&nbsp;<spring:message code='contact'/>"
                class="btn btn-inverse"
                data-toggle="modal">
                 <i class="icon-plus"></i>
-                &nbsp;&nbsp;<spring:message code="create"/>&nbsp;<spring:message code="contact"/>
+                &nbsp;&nbsp;<spring:message code="add"/>&nbsp;<spring:message code="zadanie"/>
             </a>
         </div>
 
