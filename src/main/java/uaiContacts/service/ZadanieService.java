@@ -30,18 +30,6 @@ public class ZadanieService {
 
         return buildResult(result);
     }
-/*
-    @Transactional(readOnly = true)
-    public RozwiazanieListVO findByJezykLike(int page, int maxResults, String jezyk) {
-        Page<Rozwiazanie> result = executeQueryFindByName(page, maxResults, jezyk);
-
-        if(shouldExecuteSameQueryInLastPage(page, result)){
-            int lastPage = result.getTotalPages() - 1;
-            result = executeQueryFindByName(lastPage, maxResults, jezyk);
-        }
-
-        return buildResult(result);
-    }*/
     
     @Transactional(readOnly = true)
     public ZadanieListVO findByAutorLike(int page, int maxResults, int autor) {
@@ -64,6 +52,12 @@ public class ZadanieService {
 
         return zadanieRepository.findAll(pageRequest);
     }
+    
+    private Page<Zadanie> executeQueryFindByAutor(int page, int maxResults, int autor) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNumerASC());
+
+        return zadanieRepository.findByAutorLike(pageRequest, autor);
+    }
 
     private Sort sortByNumerASC() {
         return new Sort(Sort.Direction.ASC, "numer");
@@ -80,11 +74,7 @@ public class ZadanieService {
     }*/
     
 
-    private Page<Zadanie> executeQueryFindByAutor(int page, int maxResults, int autor) {
-        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNumerASC());
 
-        return zadanieRepository.findByAutorLike(pageRequest, autor);
-    }
 
     private boolean isUserAfterOrOnLastPage(int page, Page<Zadanie> result) {
         return page >= result.getTotalPages() - 1;

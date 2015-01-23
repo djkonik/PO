@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <style>
+	body{padding:0;}
+	.modal {top:1%;}
 	.row {margin-left:0px;}
 	.big-input {width:550px;}
 	.code-area {width: 99%; height:100%}

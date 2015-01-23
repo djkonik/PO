@@ -68,7 +68,7 @@
                     <td class="width15">
                         <div class="text-center">
                             <input type="hidden" value="{{contact.id}}"/>
-                            <a href="#editZadaniaModal"
+                            <a href="#"
                                ng-click="selectedZadanie(zadanie);"
                                role="button"
                                title="Edytuj zadanie"

@@ -11,27 +11,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import uaiContacts.service.UserService;
+import uaiContacts.repository.UserRepository;
+import uaiContacts.service.OgraniczenieService;
 import uaiContacts.service.ZadanieService;
-import uaiContacts.vo.RozwiazanieListVO;
+import uaiContacts.vo.OgraniczenieListVO;
 import uaiContacts.vo.ZadanieListVO;
+
 
 @Controller
 @RequestMapping(value = "/protected/zadania")
 public class ZadaniaController {
 
-/*    private static final String DEFAULT_PAGE_DISPLAYED_TO_USER = "0";*/
+    private static final String DEFAULT_PAGE_DISPLAYED_TO_USER = "1";
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ZadanieService zadanieService;
     
     @Autowired
-    private UserService userService;
+    private OgraniczenieService ograniczenieService;
 
     @Autowired
     private MessageSource messageSource;
@@ -49,32 +55,32 @@ public class ZadaniaController {
         return createListAllResponse(page, locale);
     }
 
-/*
-    @RequestMapping(value = "/{name}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> search(@PathVariable("name") String name,
+
+    @RequestMapping(value = "/{numer}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> listOgraniczenia(@PathVariable("numer") int numer,
                                     @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
                                     Locale locale) {
-        return search(name, page, locale, null);
+        return listOgraniczenia(numer, page, locale, null);
     }
 
-    private ResponseEntity<?> search(String name, int page, Locale locale, String actionMessageKey) {
-        RozwiazanieListVO rozwiazanieListVO = rozwiazanieService.findByJezykLike(page, maxResults, name);
+    private ResponseEntity<?> listOgraniczenia(int numer, int page, Locale locale, String actionMessageKey) {
+    	OgraniczenieListVO ograniczenieListVO = ograniczenieService.findByZadanieLike(page, maxResults, numer);
 
         if (!StringUtils.isEmpty(actionMessageKey)) {
-            addActionMessageToVO(rozwiazanieListVO, locale, actionMessageKey, null);
+        	addActionMessageToOgraniczenieVO(ograniczenieListVO, locale, actionMessageKey, null);
         }
 
-        Object[] args = {name};
+        Object[] args = {numer};
 
-        addSearchMessageToVO(rozwiazanieListVO, locale, "message.search.for.active", args);
+        addActionMessageToOgraniczenieVO(ograniczenieListVO, locale, "message.search.for.active", args);
 
-        return new ResponseEntity<RozwiazanieListVO>(rozwiazanieListVO, HttpStatus.OK);
-    }*/
+        return new ResponseEntity<OgraniczenieListVO>(ograniczenieListVO, HttpStatus.OK);
+    }
 
     private ZadanieListVO listAll(int page) {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user instanceof User) {
-        	return zadanieService.findByAutorLike(page, maxResults, userService.findByEmail(((User)user).getUsername()).getId());
+        	return zadanieService.findByAutorLike(page, maxResults, userRepository.findByEmail(((User)user).getUsername()).getId());
         } else
         	return null;
     }
@@ -90,12 +96,12 @@ public class ZadaniaController {
     private ResponseEntity<?> createListAllResponse(int page, Locale locale, String messageKey) {
         ZadanieListVO zadanieListVO = listAll(page);
 
-        addActionMessageToVO(zadanieListVO, locale, messageKey, null);
+        addActionMessageToZadanieVO(zadanieListVO, locale, messageKey, null);
 
         return returnListToUser(zadanieListVO);
     }
 
-    private ZadanieListVO addActionMessageToVO(ZadanieListVO zadanieListVO, Locale locale, String actionMessageKey, Object[] args) {
+    private ZadanieListVO addActionMessageToZadanieVO(ZadanieListVO zadanieListVO, Locale locale, String actionMessageKey, Object[] args) {
         if (StringUtils.isEmpty(actionMessageKey)) {
             return zadanieListVO;
         }
@@ -104,18 +110,15 @@ public class ZadaniaController {
 
         return zadanieListVO;
     }
-/*
-    private RozwiazanieListVO addSearchMessageToVO(RozwiazanieListVO rozwiazanieListVO, Locale locale, String actionMessageKey, Object[] args) {
+    
+    private OgraniczenieListVO addActionMessageToOgraniczenieVO(OgraniczenieListVO ograniczenieListVO, Locale locale, String actionMessageKey, Object[] args) {
         if (StringUtils.isEmpty(actionMessageKey)) {
-            return rozwiazanieListVO;
+            return ograniczenieListVO;
         }
 
-        rozwiazanieListVO.setSearchMessage(messageSource.getMessage(actionMessageKey, args, null, locale));
+        ograniczenieListVO.setActionMessage(messageSource.getMessage(actionMessageKey, args, null, locale));
 
-        return rozwiazanieListVO;
+        return ograniczenieListVO;
     }
 
-    private boolean isSearchActivated(String searchFor) {
-        return !StringUtils.isEmpty(searchFor);
-    }*/
 }

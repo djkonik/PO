@@ -8,9 +8,6 @@ public class RozwiazanieListVO {
     private int pagesCount;
     private long totalContacts;
 
-    private String actionMessage;
-    private String searchMessage;
-
     private List<Rozwiazanie> rozwiazania;
 
     public RozwiazanieListVO() {
@@ -44,21 +41,5 @@ public class RozwiazanieListVO {
 
     public void setTotalContacts(long totalContacts) {
         this.totalContacts = totalContacts;
-    }
-
-    public String getActionMessage() {
-        return actionMessage;
-    }
-
-    public void setActionMessage(String actionMessage) {
-        this.actionMessage = actionMessage;
-    }
-
-    public String getSearchMessage() {
-        return searchMessage;
-    }
-
-    public void setSearchMessage(String searchMessage) {
-        this.searchMessage = searchMessage;
     }
 }

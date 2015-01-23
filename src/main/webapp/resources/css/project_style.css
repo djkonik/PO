@@ -184,8 +184,9 @@ body {
 }
 
 .detailsDialog {
-    width: 90%;
-    height: 90%;
+	top: 1% !important;
+    width: 90% !important;
+    height: 90% !important;
 }
 
 .displayInLine {

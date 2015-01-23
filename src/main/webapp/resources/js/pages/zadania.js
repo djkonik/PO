@@ -40,7 +40,6 @@ function zadaniaController($scope, $http) {
     $scope.populateTable = function (data) {
         if (data.pagesCount > 0) {
             $scope.state = 'list';
-console.log(data);
 
             $scope.page = {source: data.zadania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalContacts : data.totalContacts};
 
@@ -122,25 +121,46 @@ console.log(data);
         $scope.errorOnSubmit = true;
         $scope.lastAction = '';
     }
+    
+    $scope.loadOgraniczenia = function () {
+	    $scope.lastAction = 'listOgraniczenia';
+console.log($scope.url +  $scope.zadanie.id);	
+	    var url = $scope.url +  $scope.zadanie.id;
+	
+	    $scope.startDialogAjaxRequest();
+	
+	    var config = {};
+	
+	    $http.get(url, config)
+	        .success(function (data) {
+console.log(data);
+	            $scope.finishAjaxCallOgraniczeniaOnSuccess(data, "#editZadaniaModal");
+	            $scope.displaySearchMessage = true;
+	        })
+	        .error(function(data, status, headers, config) {
+	        	$scope.state = 'error';
+	            $scope.handleErrorInDialogs(status);
+	        });
+    }
+    
+    $scope.startDialogAjaxRequest = function () {
+        $("#loadingModal").modal('show');
+    }
+    
+    $scope.finishAjaxCallOgraniczeniaOnSuccess = function (data, modalId) {
+    	$scope.zadanie.ograniczenia = data.ograniczenia;
+        $scope.page.ograniczenia = {source: data.zadania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalContacts : data.totalContacts};
+    	$("#loadingModal").modal('hide');
+    	$(modalId).modal('show');
+console.log($scope.zadanie);
+    }
 
 
     $scope.selectedZadanie = function (zadanie) {
         var selectedZadanie = angular.copy(zadanie);
-        
-        var url = $scope.url;
-        $scope.lastAction = 'list';
-
-        var config = {params: {page: $scope.pageToGet}};
-        $http.get(url, config)
-	        .success(function (data) {
-	            selectedZadanie.data = data;
-	        })
-	        .error(function () {
-	        	console.log('err');
-	        });
-        console.log(selectedZadanie);
         $scope.zadanie = selectedZadanie;
-    }
+        $scope.loadOgraniczenia();
+    }  
 
     $scope.todo = function () {
     	alert('TODO');
