@@ -8,9 +8,6 @@ public class ZadanieListVO {
     private int pagesCount;
     private long totalContacts;
 
-    private String actionMessage;
-    private String searchMessage;
-
     private List<Zadanie> zadania;
 
     public ZadanieListVO() {
@@ -46,19 +43,4 @@ public class ZadanieListVO {
         this.totalContacts = totalContacts;
     }
 
-    public String getActionMessage() {
-        return actionMessage;
-    }
-
-    public void setActionMessage(String actionMessage) {
-        this.actionMessage = actionMessage;
-    }
-
-    public String getSearchMessage() {
-        return searchMessage;
-    }
-
-    public void setSearchMessage(String searchMessage) {
-        this.searchMessage = searchMessage;
-    }
 }

@@ -43,6 +43,11 @@ public class ZadanieService {
 
         return buildResult(result);
     }
+    
+    @Transactional(readOnly = true)
+    public Zadanie findByIdLike(int id) {
+        return zadanieRepository.findByIdLike(id);
+    }
 
     private boolean shouldExecuteSameQueryInLastPage(int page, Page<Zadanie> result) {
         return isUserAfterOrOnLastPage(page, result) && hasDataInDataBase(result);

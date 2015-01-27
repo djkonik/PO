@@ -64,7 +64,6 @@ console.log(data);
     $scope.exit = function (modalId) {
         $(modalId).modal('hide');
 
-        $scope.zadanie = {};
         $scope.errorOnSubmit = false;
         $scope.errorIllegalAccess = false;
         $scope.displayValidationError = false;
@@ -139,7 +138,6 @@ console.log($scope.zadanie);
         var selectedZadanie = angular.copy(zadanie);
         $scope.zadanie = selectedZadanie;
         
-        $scope.zadanie.orgOgraniczenia = $scope.zadanie.ograniczenia;
         $scope.ograniczenia.pageToGet = 0;
         $scope.ograniczenia.populateTable();
     }
@@ -165,20 +163,48 @@ console.log($scope.zadanie);
     };
     
     $scope.openNoweOgraniczenie = function () {
-    	$scope.ograniczenia.nowe = {};
+    	$scope.ograniczenia.nowe = { slowaKluczowe: [] };
     	$scope.exit('#editZadaniaModal');
     }
     
     $scope.saveOgraniczenie = function () {
-console.log($scope.ograniczenia.nowe);
+
+/*
+if (!newContactForm.$valid) {
+    $scope.displayValidationError = true;
+    return;
+}*/
+
+
+	var url = $scope.url;
+	var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, params:{slowa: "", idZadania:$scope.zadanie.id}};
+	var noweOgraniczenie = {nazwa: $scope.ograniczenia.nowe.nazwa, jezyk: $scope.ograniczenia.nowe.jezyk};
+	
+	for (var i=0; i<$scope.ograniczenia.nowe.slowaKluczowe.length; i++) {
+		config.params.slowa += ($scope.ograniczenia.nowe.slowaKluczowe[i] + ";");
+	}
+	
+	console.log(noweOgraniczenie);  	
+
+	$http.post(url, $.param(noweOgraniczenie), config)
+        .success(function (data) {
+        	console.log('success');
+        	console.log(data);
+        })
+        .error(function(data, status, headers, config) {
+        	console.log('error');
+        	console.log(data);
+        });
+    	
+    	
+    	
+    	
+
     	$scope.exit('#addOgraniczenie');
     }
     
     $scope.dodajSlowoKluczowe = function () {
-    	if (!$scope.ograniczenia.nowe.slowaKluczowe) {
-    		$scope.ograniczenia.nowe.slowaKluczowe = [];
-    	}
-    	if ((!($scope.ograniczenia.nowe.noweSlowoKluczowe == "")) && ($.inArray($scope.ograniczenia.nowe.noweSlowoKluczowe, $scope.ograniczenia.nowe.slowaKluczowe) == -1)) {
+    	if ($scope.ograniczenia.nowe.noweSlowoKluczowe && (!($scope.ograniczenia.nowe.noweSlowoKluczowe == "")) && ($.inArray($scope.ograniczenia.nowe.noweSlowoKluczowe, $scope.ograniczenia.nowe.slowaKluczowe) == -1)) {
         	$scope.ograniczenia.nowe.slowaKluczowe.push($scope.ograniczenia.nowe.noweSlowoKluczowe);
         	$scope.ograniczenia.nowe.noweSlowoKluczowe = "";
     	}
@@ -192,6 +218,8 @@ console.log($scope.ograniczenia.nowe);
     		}
     	}
     }
+    
+    
 
     $scope.todo = function () {
     	alert('TODO');

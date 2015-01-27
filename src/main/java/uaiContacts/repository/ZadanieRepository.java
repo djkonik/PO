@@ -8,5 +8,6 @@ import uaiContacts.model.User;
 import uaiContacts.model.Zadanie;
 
 public interface ZadanieRepository extends PagingAndSortingRepository<Zadanie, Integer> {
+	Zadanie findByIdLike(int id);
 	Page<Zadanie> findByAutorLike(Pageable pageable, User autor);
 }

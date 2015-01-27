@@ -1,5 +1,8 @@
 package uaiContacts.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -25,13 +29,18 @@ public class Ograniczenie {
 	
 	@Column
 	private String jezyk;
-	
+
 	@JsonBackReference 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@Fetch(FetchMode.JOIN)
-	@JoinColumn(name = "zadanie", insertable=false, updatable=false)
+	@JoinColumn(name = "zadanie")
 	@JsonIgnore
     private Zadanie zadanie;
+	
+	@JsonBackReference 
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "ograniczenie")
+	@JsonIgnore
+    private List<SlowoKluczowe> slowaKluczowe;
 
     public Ograniczenie() {
 		super();
@@ -76,6 +85,16 @@ public class Ograniczenie {
 	@JsonIgnore
 	public void setZadanie(Zadanie zadanie) {
 		this.zadanie = zadanie;
+	}
+
+	@JsonIgnore
+	public List<SlowoKluczowe> getSlowaKluczowe() {
+		return slowaKluczowe;
+	}
+
+	@JsonIgnore
+	public void setSlowaKluczowe(List<SlowoKluczowe> slowaKluczowe) {
+		this.slowaKluczowe = slowaKluczowe;
 	}
 
 	@Override
