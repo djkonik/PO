@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import uaiContacts.model.User;
 import uaiContacts.model.Zadanie;
 import uaiContacts.repository.ZadanieRepository;
 import uaiContacts.vo.ZadanieListVO;
@@ -32,7 +33,7 @@ public class ZadanieService {
     }
     
     @Transactional(readOnly = true)
-    public ZadanieListVO findByAutorLike(int page, int maxResults, int autor) {
+    public ZadanieListVO findByAutorLike(int page, int maxResults, User autor) {
         Page<Zadanie> result = executeQueryFindByAutor(page, maxResults, autor);
 
         if(shouldExecuteSameQueryInLastPage(page, result)){
@@ -53,7 +54,7 @@ public class ZadanieService {
         return zadanieRepository.findAll(pageRequest);
     }
     
-    private Page<Zadanie> executeQueryFindByAutor(int page, int maxResults, int autor) {
+    private Page<Zadanie> executeQueryFindByAutor(int page, int maxResults, User autor) {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNumerASC());
 
         return zadanieRepository.findByAutorLike(pageRequest, autor);

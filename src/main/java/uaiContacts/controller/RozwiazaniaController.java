@@ -44,7 +44,7 @@ public class RozwiazaniaController {
         RozwiazanieListVO rozwiazanieListVO = null;
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user instanceof User) {
-        	rozwiazanieListVO = rozwiazanieService.findByAutorLike(page, maxResults, userRepository.findByEmail(((User)user).getUsername()).getId());
+        	rozwiazanieListVO = rozwiazanieService.findByAutorLike(page, maxResults, userRepository.findByEmail(((User)user).getUsername()));
         }
         return new ResponseEntity<RozwiazanieListVO>(rozwiazanieListVO, HttpStatus.OK);
     }

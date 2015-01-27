@@ -27,10 +27,10 @@
                     </div>
                     <div class="input-append">
                         <label>
-                                <span class="alert alert-error"
-                                      ng-show="displayValidationError && newContactForm.name.$error.required">
-                                        <spring:message code="required"/>
-                                </span>
+                            <span class="alert alert-error"
+                                  ng-show="displayValidationError && newContactForm.name.$error.required">
+                                    <spring:message code="required"/>
+                            </span>
                         </label>
                     </div>
                 </div>

@@ -8,6 +8,7 @@
 	.code-area {width: 99%; height:100%}
 	.code-area-container {width: 100%; height:400px;}
 	input[readonly] {cursor: pointer;}
+	textarea[readonly] {cursor: pointer;}
 </style>
 
 <div id="detailsRozwiazaniaModal"

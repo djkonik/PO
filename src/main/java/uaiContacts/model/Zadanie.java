@@ -1,12 +1,20 @@
 package uaiContacts.model;
 
-import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -32,15 +40,22 @@ public class Zadanie {
 	@Column
 	private String tytul;
 	
-	@Column
-	private int autor;
- 
+	@JsonBackReference 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
+	@JoinColumn(name = "autor", insertable=false, updatable=false)
+    private User autor;
+	
+	@JsonBackReference 
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "zadanie")
+	@Fetch(FetchMode.JOIN)
+    private List<Ograniczenie> ograniczenia;
 	
     public Zadanie() {
 	}
 
 	public Zadanie(int id, int numer, String tresc, boolean isCaseSensitive,
-			long maxCzasWykonania, String tytul, int autor) {
+			long maxCzasWykonania, String tytul) {
 		super();
 		this.id = id;
 		this.numer = numer;
@@ -48,7 +63,6 @@ public class Zadanie {
 		this.isCaseSensitive = isCaseSensitive;
 		this.maxCzasWykonania = maxCzasWykonania;
 		this.tytul = tytul;
-		this.autor = autor;
 	}
 
 	public int getId() {
@@ -99,19 +113,28 @@ public class Zadanie {
 		this.tytul = tytul;
 	}
 
-	public int getAutor() {
+	public User getAutor() {
 		return autor;
 	}
 
-	public void setAutor(int autor) {
+	public void setAutor(User autor) {
 		this.autor = autor;
+	}
+	
+
+	public List<Ograniczenie> getOgraniczenia() {
+		return ograniczenia;
+	}
+
+	public void setOgraniczenia(List<Ograniczenie> ograniczenia) {
+		this.ograniczenia = ograniczenia;
 	}
 
 	@Override
     public boolean equals(Object object) {
         if (object instanceof Zadanie){
-            Zadanie contact = (Zadanie) object;
-            return contact.id == id;
+            Zadanie zadanie = (Zadanie) object;
+            return zadanie.id == id;
         }
 
         return false;

@@ -80,7 +80,7 @@ public class ZadaniaController {
     private ZadanieListVO listAll(int page) {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user instanceof User) {
-        	return zadanieService.findByAutorLike(page, maxResults, userRepository.findByEmail(((User)user).getUsername()).getId());
+        	return zadanieService.findByAutorLike(page, maxResults, userRepository.findByEmail(((User)user).getUsername()));
         } else
         	return null;
     }

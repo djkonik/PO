@@ -3,8 +3,6 @@ function zadaniaController($scope, $http) {
 
     $scope.state = 'busy';
 
-    $scope.lastAction = '';
-
     $scope.url = "/uaiContacts/protected/zadania/";
 
     $scope.errorOnSubmit = false;
@@ -16,12 +14,12 @@ function zadaniaController($scope, $http) {
     $scope.displayCreateContactButton = false;
 
     $scope.zadanie = {}
-
-    $scope.searchFor = ""
+    
+    $scope.ograniczenia = {}
+    $scope.ograniczenia.pageToGet = 0;
 
     $scope.getZadanieList = function () {
         var url = $scope.url;
-        $scope.lastAction = 'list';
 
         $scope.startDialogAjaxRequest();
 
@@ -29,6 +27,7 @@ function zadaniaController($scope, $http) {
 
         $http.get(url, config)
             .success(function (data) {
+console.log(data);
                 $scope.finishAjaxCallOnSuccess(data, null, false);
             })
             .error(function () {
@@ -54,29 +53,12 @@ function zadaniaController($scope, $http) {
             $scope.state = 'noresult';
             $scope.displayCreateContactButton = true;
 
-            if(!$scope.searchFor){
-                $scope.displaySearchButton = false;
-            }
-        }
-
-        if (data.actionMessage || data.searchMessage) {
-            $scope.displayMessageToUser = $scope.lastAction != 'search';
-
-            $scope.page.actionMessage = data.actionMessage;
-            $scope.page.searchMessage = data.searchMessage;
-        } else {
-            $scope.displayMessageToUser = false;
         }
     }
 
     $scope.changePage = function (page) {
         $scope.pageToGet = page;
-
-        if($scope.searchFor){
-            $scope.searchContact($scope.searchFor, true);
-        } else{
-            $scope.getZadanieList();
-        }
+        $scope.getZadanieList();
     };
 
     $scope.exit = function (modalId) {
@@ -97,8 +79,6 @@ function zadaniaController($scope, $http) {
                 $scope.exit(modalId);
             }
         }
-
-        $scope.lastAction = '';
     }
 
     $scope.startDialogAjaxRequest = function () {
@@ -119,10 +99,9 @@ function zadaniaController($scope, $http) {
         }
 
         $scope.errorOnSubmit = true;
-        $scope.lastAction = '';
     }
     
-    $scope.loadOgraniczenia = function () {
+   /* $scope.loadOgraniczenia = function () {
 	    $scope.lastAction = 'listOgraniczenia';
 console.log($scope.url +  $scope.zadanie.id);	
 	    var url = $scope.url +  $scope.zadanie.id;
@@ -141,26 +120,78 @@ console.log(data);
 	        	$scope.state = 'error';
 	            $scope.handleErrorInDialogs(status);
 	        });
-    }
+    }*/
     
-    $scope.startDialogAjaxRequest = function () {
+   /* $scope.startDialogAjaxRequest = function () {
         $("#loadingModal").modal('show');
-    }
+    }*/
     
-    $scope.finishAjaxCallOgraniczeniaOnSuccess = function (data, modalId) {
+    /*$scope.finishAjaxCallOgraniczeniaOnSuccess = function (data, modalId) {
     	$scope.zadanie.ograniczenia = data.ograniczenia;
         $scope.page.ograniczenia = {source: data.zadania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalContacts : data.totalContacts};
     	$("#loadingModal").modal('hide');
     	$(modalId).modal('show');
 console.log($scope.zadanie);
-    }
+    }*/
 
 
     $scope.selectedZadanie = function (zadanie) {
         var selectedZadanie = angular.copy(zadanie);
         $scope.zadanie = selectedZadanie;
-        $scope.loadOgraniczenia();
-    }  
+        
+        $scope.zadanie.orgOgraniczenia = $scope.zadanie.ograniczenia;
+        $scope.ograniczenia.pageToGet = 0;
+        $scope.ograniczenia.populateTable();
+    }
+    
+    $scope.ograniczenia.changePage = function (page) {
+        $scope.ograniczenia.pageToGet = page;
+        $scope.ograniczenia.populateTable();
+    };
+    
+    $scope.ograniczenia.populateTable = function () {
+        if ($scope.zadanie.ograniczenia.length > 0) {
+            $scope.ograniczenia.state = 'list';
+            
+            $scope.ograniczenia.page = {source: $scope.zadanie.ograniczenia.slice($scope.ograniczenia.pageToGet*5, ($scope.ograniczenia.pageToGet + 1)*5), currentPage: $scope.ograniczenia.pageToGet, pagesCount: Math.ceil($scope.zadanie.ograniczenia.length/5), totalContacts : $scope.zadanie.ograniczenia.length};
+            if($scope.ograniczenia.page.pagesCount <= $scope.ograniczenia.page.currentPage){
+                $scope.ograniczenia.pageToGet = $scope.ograniczenia.page.pagesCount - 1;
+                $scope.ograniczenia.page.currentPage = $scope.ograniczenia.page.pagesCount - 1;
+            }
+
+        } else {
+            $scope.ograniczenia.state = 'noresult';
+        }
+    };
+    
+    $scope.openNoweOgraniczenie = function () {
+    	$scope.ograniczenia.nowe = {};
+    	$scope.exit('#editZadaniaModal');
+    }
+    
+    $scope.saveOgraniczenie = function () {
+console.log($scope.ograniczenia.nowe);
+    	$scope.exit('#addOgraniczenie');
+    }
+    
+    $scope.dodajSlowoKluczowe = function () {
+    	if (!$scope.ograniczenia.nowe.slowaKluczowe) {
+    		$scope.ograniczenia.nowe.slowaKluczowe = [];
+    	}
+    	if ((!($scope.ograniczenia.nowe.noweSlowoKluczowe == "")) && ($.inArray($scope.ograniczenia.nowe.noweSlowoKluczowe, $scope.ograniczenia.nowe.slowaKluczowe) == -1)) {
+        	$scope.ograniczenia.nowe.slowaKluczowe.push($scope.ograniczenia.nowe.noweSlowoKluczowe);
+        	$scope.ograniczenia.nowe.noweSlowoKluczowe = "";
+    	}
+    }
+    
+    $scope.usunSlowoKluczowe = function (slowoKluczowe) {
+    	if ($scope.ograniczenia.nowe.slowaKluczowe) {
+    		var index = $scope.ograniczenia.nowe.slowaKluczowe.indexOf(slowoKluczowe);
+    		if (index > -1) {
+    			$scope.ograniczenia.nowe.slowaKluczowe.splice(index, 1);
+    		}
+    	}
+    }
 
     $scope.todo = function () {
     	alert('TODO');

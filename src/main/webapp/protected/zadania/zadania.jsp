@@ -7,7 +7,7 @@
         <p class="text-center">
             <spring:message code='zadania.header'/>
             <a href="#"
-               ng-click="getRozwiazanieList();"
+               ng-click="getZadanieList();"
                id="contactsHeaderButton"
                role="button"
                ng-class="{'': displaySearchButton == true, 'none': displaySearchButton == false}"
@@ -68,12 +68,12 @@
                     <td class="width15">
                         <div class="text-center">
                             <input type="hidden" value="{{contact.id}}"/>
-                            <a href="#"
+                            <a href="#editZadaniaModal"
                                ng-click="selectedZadanie(zadanie);"
                                role="button"
                                title="Edytuj zadanie"
                                class="btn btn-inverse" data-toggle="modal">
-                                <i class="icon-pencil"></i>
+                                <i class="icon-edit"></i>
                             </a>
                             <a href="#"
                                ng-click="todo();"
@@ -127,7 +127,7 @@
             <a href="#"
                role="button"
                ng-click="todo();"
-               title="<spring:message code='create'/>&nbsp;<spring:message code='contact'/>"
+               title="<spring:message code='add'/>&nbsp;<spring:message code='zadanie'/>"
                class="btn btn-inverse"
                data-toggle="modal">
                 <i class="icon-plus"></i>

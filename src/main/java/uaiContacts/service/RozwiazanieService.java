@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import uaiContacts.model.Rozwiazanie;
+import uaiContacts.model.User;
 import uaiContacts.repository.RozwiazanieRepository;
 import uaiContacts.vo.RozwiazanieListVO;
 
@@ -32,7 +33,7 @@ public class RozwiazanieService {
     }
     
     @Transactional(readOnly = true)
-    public RozwiazanieListVO findByAutorLike(int page, int maxResults, int autor) {
+    public RozwiazanieListVO findByAutorLike(int page, int maxResults, User autor) {
         Page<Rozwiazanie> result = executeQueryFindByAutor(page, maxResults, autor);
 
         if(shouldExecuteSameQueryInLastPage(page, result)){
@@ -53,7 +54,7 @@ public class RozwiazanieService {
         return rozwiazanieRepository.findAll(pageRequest);
     }
     
-    private Page<Rozwiazanie> executeQueryFindByAutor(int page, int maxResults, int autor) {
+    private Page<Rozwiazanie> executeQueryFindByAutor(int page, int maxResults, User autor) {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaDESC());
 
         return rozwiazanieRepository.findByAutorLike(pageRequest, autor);

@@ -4,9 +4,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -39,12 +45,15 @@ public class Rozwiazanie {
 	@Column
 	private int nrZadania;
 	
-	@Column
-	private int autor;
+	@JsonBackReference 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
+	@JoinColumn(name = "autor", insertable=false, updatable=false)
+    private User autor;
 	
 	public Rozwiazanie(Date czasPrzeslania, boolean czySprawdzone,
 			boolean czyZatwierdzone, String jezyk, String kod,
-			String przyczyna, int nrZadania, int autor) {
+			String przyczyna, int nrZadania) {
 		this.czasPrzeslania = czasPrzeslania;
 		this.czySprawdzone = czySprawdzone;
 		this.czyZatwierdzone = czyZatwierdzone;
@@ -52,7 +61,6 @@ public class Rozwiazanie {
 		this.kod = kod;
 		this.przyczyna = przyczyna;
 		this.nrZadania = nrZadania;
-		this.autor = autor;
 	}
 
 	public Date getCzasPrzeslania() {
@@ -125,12 +133,12 @@ public class Rozwiazanie {
 	}
 
 
-	public int getAutor() {
+	public User getAutor() {
 		return autor;
 	}
 
 
-	public void setAutor(int autor) {
+	public void setAutor(User autor) {
 		this.autor = autor;
 	}
 	
