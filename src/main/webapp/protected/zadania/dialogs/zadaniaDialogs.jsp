@@ -17,7 +17,8 @@
 	.create-button-noresult {text-align:center; margin-top: 30px;}
 	label {font-style: bold;}
 	.result-list {border: thin solid black; overflow-y: scroll; height:220px;}
-	.small-details-dialog{height:450px;};
+	.small-details-dialog{height:450px;}
+	.small-details-dialog-message{height:500px;}
 
 </style>
 
@@ -210,17 +211,17 @@
 </div>
 
 <div id="addOgraniczenie"
-     class="modal hide fade in centering small-details-dialog"
+     class="modal hide fade in centering "
+     ng-class="{'small-details-dialog': !displayValidationError, 'small-details-dialog-message': displayValidationError}"
      role="dialog"
      aria-labelledby="updateContactsModalLabel"
      aria-hidden="true">
     <div class="modal-header">
         <div class="pull-right">
-            <a href="#editZadaniaModal"
+            <a href="#"
                role="button"
                ng-click="saveOgraniczenie();"
-               data-dismiss="modal"
-                aria-hidden="true"
+               aria-hidden="true"
                title="<spring:message code='cancel'/>"
                class="btn btn-inverse"
                data-toggle="modal">
@@ -244,6 +245,12 @@
     </div>
    <div class="modal-body">
         <form name="noweOgraniczenieForm" novalidate >
+			<div class="alert alert-danger" role="alert" ng-class="{'hidden': !displayValidationError, '': displayValidationError}">
+			  <a href="#" class="close" ng-click="hideValidationError()">&times;</a>
+			  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			  <strong>Błąd!</strong>  Wprowadzone dane są nieprawidłowe
+			</div>
+        
             <div class="row">
                <div class="span12">
 	               <div class="input-append">

@@ -1,4 +1,4 @@
-package uaiContacts.model;
+package model.entity;
 
 import java.util.List;
 
@@ -110,5 +110,10 @@ public class Ograniczenie {
     @Override
     public int hashCode() {
         return id;
+    }
+    
+    @JsonIgnore
+    public boolean isValid() {
+    	return nazwa != null && !nazwa.isEmpty() && jezyk != null && !jezyk.isEmpty() && slowaKluczowe != null && slowaKluczowe.size() > 0;
     }
 }

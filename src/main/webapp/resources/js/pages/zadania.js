@@ -7,9 +7,7 @@ function zadaniaController($scope, $http) {
 
     $scope.errorOnSubmit = false;
     $scope.errorIllegalAccess = false;
-    $scope.displayMessageToUser = false;
     $scope.displayValidationError = false;
-    $scope.displaySearchMessage = false;
     $scope.displaySearchButton = false;
     $scope.displayCreateContactButton = false;
 
@@ -27,7 +25,6 @@ function zadaniaController($scope, $http) {
 
         $http.get(url, config)
             .success(function (data) {
-console.log(data);
                 $scope.finishAjaxCallOnSuccess(data, null, false);
             })
             .error(function () {
@@ -63,7 +60,6 @@ console.log(data);
 
     $scope.exit = function (modalId) {
         $(modalId).modal('hide');
-
         $scope.errorOnSubmit = false;
         $scope.errorIllegalAccess = false;
         $scope.displayValidationError = false;
@@ -86,53 +82,6 @@ console.log(data);
         $scope.previousState = $scope.state;
         $scope.state = 'busy';
     }
-
-    $scope.handleErrorInDialogs = function (status) {
-        $("#loadingModal").modal('hide');
-        $scope.state = $scope.previousState;
-
-        // illegal access
-        if(status == 403){
-            $scope.errorIllegalAccess = true;
-            return;
-        }
-
-        $scope.errorOnSubmit = true;
-    }
-    
-   /* $scope.loadOgraniczenia = function () {
-	    $scope.lastAction = 'listOgraniczenia';
-console.log($scope.url +  $scope.zadanie.id);	
-	    var url = $scope.url +  $scope.zadanie.id;
-	
-	    $scope.startDialogAjaxRequest();
-	
-	    var config = {};
-	
-	    $http.get(url, config)
-	        .success(function (data) {
-console.log(data);
-	            $scope.finishAjaxCallOgraniczeniaOnSuccess(data, "#editZadaniaModal");
-	            $scope.displaySearchMessage = true;
-	        })
-	        .error(function(data, status, headers, config) {
-	        	$scope.state = 'error';
-	            $scope.handleErrorInDialogs(status);
-	        });
-    }*/
-    
-   /* $scope.startDialogAjaxRequest = function () {
-        $("#loadingModal").modal('show');
-    }*/
-    
-    /*$scope.finishAjaxCallOgraniczeniaOnSuccess = function (data, modalId) {
-    	$scope.zadanie.ograniczenia = data.ograniczenia;
-        $scope.page.ograniczenia = {source: data.zadania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalContacts : data.totalContacts};
-    	$("#loadingModal").modal('hide');
-    	$(modalId).modal('show');
-console.log($scope.zadanie);
-    }*/
-
 
     $scope.selectedZadanie = function (zadanie) {
         var selectedZadanie = angular.copy(zadanie);
@@ -164,43 +113,51 @@ console.log($scope.zadanie);
     
     $scope.openNoweOgraniczenie = function () {
     	$scope.ograniczenia.nowe = { slowaKluczowe: [] };
-    	$scope.exit('#editZadaniaModal');
+    	$('#editZadaniaModal').modal('hide');
     }
     
     $scope.saveOgraniczenie = function () {
+        $scope.displayValidationError = false;
+        $('#addOgraniczenie').modal('hide');
+        $("#loadingModal").modal('show');
 
-/*
-if (!newContactForm.$valid) {
-    $scope.displayValidationError = true;
-    return;
-}*/
-
-
-	var url = $scope.url;
-	var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, params:{slowa: "", idZadania:$scope.zadanie.id}};
-	var noweOgraniczenie = {nazwa: $scope.ograniczenia.nowe.nazwa, jezyk: $scope.ograniczenia.nowe.jezyk};
+		var url = $scope.url;
+		var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, params:{slowa: "", idZadania:$scope.zadanie.id}};
+		var noweOgraniczenie = {nazwa: $scope.ograniczenia.nowe.nazwa, jezyk: $scope.ograniczenia.nowe.jezyk};
+		
+		for (var i=0; i<$scope.ograniczenia.nowe.slowaKluczowe.length; i++) {
+			config.params.slowa += ($scope.ograniczenia.nowe.slowaKluczowe[i] + ";");
+		}
+		
+		var ograniczenieInvalid = function() {
+			console.log("invalid");
+			$("#loadingModal").modal('hide');
+        	$scope.displayValidationError = true;
+        	$('#addOgraniczenie').modal('show');
+		}
+		
+		var ograniczenieSaved = function () {
+			console.log("saved");
+			$("#loadingModal").modal('hide');
+        	$scope.zadanie.ograniczenia.push(noweOgraniczenie);
+        	$scope.ograniczenia.populateTable();
+        	$('#editZadaniaModal').modal('show');
+		}
 	
-	for (var i=0; i<$scope.ograniczenia.nowe.slowaKluczowe.length; i++) {
-		config.params.slowa += ($scope.ograniczenia.nowe.slowaKluczowe[i] + ";");
-	}
-	
-	console.log(noweOgraniczenie);  	
+		$http.post(url, $.param(noweOgraniczenie), config)
+	        .success(function (data) {
+	        	console.log(data);
+	        	if (data == "true") {
+	        		ograniczenieSaved();
+	        	} else {
+	        		ograniczenieInvalid();
+	        	}
 
-	$http.post(url, $.param(noweOgraniczenie), config)
-        .success(function (data) {
-        	console.log('success');
-        	console.log(data);
-        })
-        .error(function(data, status, headers, config) {
-        	console.log('error');
-        	console.log(data);
-        });
+	        })
+	        .error(function(data, status, headers, config) {
+	        	ograniczenieInvalid();
+	        });
     	
-    	
-    	
-    	
-
-    	$scope.exit('#addOgraniczenie');
     }
     
     $scope.dodajSlowoKluczowe = function () {
@@ -219,14 +176,13 @@ if (!newContactForm.$valid) {
     	}
     }
     
-    
+    $scope.hideValidationError = function () {
+    	$scope.displayValidationError = false;
+    }
 
     $scope.todo = function () {
     	alert('TODO');
-    };
+    }
     
-
-
-
     $scope.getZadanieList();
 }

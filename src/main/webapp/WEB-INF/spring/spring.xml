@@ -12,6 +12,9 @@
     <context:component-scan base-package="uaiContacts.repository"/>
     <context:component-scan base-package="uaiContacts.service"/>
     <context:component-scan base-package="uaiContacts.controller"/>
+    <context:component-scan base-package="controller"/>
+    <context:component-scan base-package="model.entity"/>
+    <context:component-scan base-package="model.repository"/>
 
     <!-- SpringMVC -->
     <import resource="spring-mvc.xml"/>

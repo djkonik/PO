@@ -1,8 +1,8 @@
 package uaiContacts.vo;
 
-import uaiContacts.model.Contact;
-
 import java.util.List;
+
+import model.entity.Contact;
 
 public class ContactListVO {
     private int pagesCount;

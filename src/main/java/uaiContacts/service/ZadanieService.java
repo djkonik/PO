@@ -1,5 +1,8 @@
 package uaiContacts.service;
 
+import model.entity.User;
+import model.entity.Zadanie;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,8 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import uaiContacts.model.User;
-import uaiContacts.model.Zadanie;
 import uaiContacts.repository.ZadanieRepository;
 import uaiContacts.vo.ZadanieListVO;
 

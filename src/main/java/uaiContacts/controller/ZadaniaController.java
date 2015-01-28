@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import model.entity.Ograniczenie;
+import model.entity.SlowoKluczowe;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -18,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import uaiContacts.model.Ograniczenie;
-import uaiContacts.model.SlowoKluczowe;
 import uaiContacts.repository.OgraniczenieRepository;
 import uaiContacts.repository.UserRepository;
 import uaiContacts.service.OgraniczenieService;
@@ -77,24 +78,23 @@ public class ZadaniaController {
     								@RequestParam(required = true, defaultValue = "") String slowa,
     								@RequestParam(required = true) int idZadania,
                                     Locale locale) {
-    	String[] slowaKluczowe = slowa.split(";");
-    	if (ograniczenie.getJezyk().isEmpty() || ograniczenie.getNazwa().isEmpty() || slowaKluczowe.length == 0) {
-    		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
-    	} else {
-    		ograniczenie.setZadanie(zadanieService.findByIdLike(idZadania));
-    		List<SlowoKluczowe> listSlowaKluczowe = new LinkedList<SlowoKluczowe>();
-    		for (String s : slowaKluczowe) {
+		ograniczenie.setZadanie(zadanieService.findByIdLike(idZadania));
+		List<SlowoKluczowe> listSlowaKluczowe = new LinkedList<SlowoKluczowe>();
+		String[] slowaKluczowe = slowa.split(";");
+		for (String s : slowaKluczowe) {
+			if (!s.isEmpty()) {
     			SlowoKluczowe slowoKluczowe = new SlowoKluczowe();
     			slowoKluczowe.setOgraniczenie(ograniczenie);
     			slowoKluczowe.setSlowo(s);
     			listSlowaKluczowe.add(slowoKluczowe);
-    		}
-    		ograniczenie.setSlowaKluczowe(listSlowaKluczowe);
-    		ograniczenieRepository.save(ograniczenie);
-    	}
-    	
-
-        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			}
+		}
+		ograniczenie.setSlowaKluczowe(listSlowaKluczowe);
+		if (ograniczenie.isValid()) {
+			ograniczenieRepository.save(ograniczenie);
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		}
     }
-
 }

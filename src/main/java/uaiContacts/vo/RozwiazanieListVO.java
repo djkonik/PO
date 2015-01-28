@@ -2,7 +2,7 @@ package uaiContacts.vo;
 
 import java.util.List;
 
-import uaiContacts.model.Rozwiazanie;
+import model.entity.Rozwiazanie;
 
 public class RozwiazanieListVO {
     private int pagesCount;

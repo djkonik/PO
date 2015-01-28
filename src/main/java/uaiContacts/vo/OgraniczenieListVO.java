@@ -2,7 +2,7 @@ package uaiContacts.vo;
 
 import java.util.List;
 
-import uaiContacts.model.Ograniczenie;
+import model.entity.Ograniczenie;
 
 public class OgraniczenieListVO {
     private int pagesCount;

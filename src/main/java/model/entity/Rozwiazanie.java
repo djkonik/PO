@@ -1,4 +1,4 @@
-package uaiContacts.model;
+package model.entity;
 
 import java.util.Date;
 

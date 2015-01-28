@@ -2,7 +2,7 @@ package uaiContacts.vo;
 
 import java.util.List;
 
-import uaiContacts.model.Zadanie;
+import model.entity.Zadanie;
 
 public class ZadanieListVO {
     private int pagesCount;

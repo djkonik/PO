@@ -1,4 +1,4 @@
-package uaiContacts.model;
+package model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
