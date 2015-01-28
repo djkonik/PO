@@ -1,4 +1,4 @@
-package uaiContacts.repository;
+package model.repository;
 
 import model.entity.User;
 import model.entity.Zadanie;

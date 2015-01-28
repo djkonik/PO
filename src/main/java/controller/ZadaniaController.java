@@ -1,4 +1,4 @@
-package uaiContacts.controller;
+package controller;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,34 +6,34 @@ import java.util.Locale;
 
 import model.entity.Ograniczenie;
 import model.entity.SlowoKluczowe;
+import model.entity.User;
+import model.entity.Zadanie;
+import model.repository.OgraniczenieRepository;
+import model.repository.UserRepository;
+import model.repository.ZadanieRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import uaiContacts.repository.OgraniczenieRepository;
-import uaiContacts.repository.UserRepository;
-import uaiContacts.service.OgraniczenieService;
-import uaiContacts.service.ZadanieService;
-import uaiContacts.vo.OgraniczenieListVO;
 import uaiContacts.vo.ZadanieListVO;
 
 
 @Controller
 @RequestMapping(value = "/protected/zadania")
 public class ZadaniaController {
-
-    private static final String DEFAULT_PAGE_DISPLAYED_TO_USER = "1";
     
     @Autowired
     private UserRepository userRepository;
@@ -42,10 +42,7 @@ public class ZadaniaController {
     private OgraniczenieRepository ograniczenieRepository;
 
     @Autowired
-    private ZadanieService zadanieService;
-    
-    @Autowired
-    private OgraniczenieService ograniczenieService;
+    private ZadanieRepository zadanieRepository;
 
     @Value("5")
     private int maxResults;
@@ -58,19 +55,10 @@ public class ZadaniaController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> listAll(@RequestParam int page, Locale locale) {
         ZadanieListVO zadanieList = null;
-        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user instanceof User) {
-        	zadanieList = zadanieService.findByAutorLike(page, maxResults, userRepository.findByEmail(((User)user).getUsername()));
-        }
-        return new ResponseEntity<ZadanieListVO>(zadanieList, HttpStatus.OK);
-    }
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        zadanieList = findByAutorLike(page, maxResults, userRepository.findByEmail(user));
 
-    @RequestMapping(value = "/{numer}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> listOgraniczenia(@PathVariable("numer") int numer,
-                                    @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
-                                    Locale locale) {
-    	OgraniczenieListVO ograniczenieListVO = ograniczenieService.findByZadanieLike(page, maxResults, numer);
-        return new ResponseEntity<OgraniczenieListVO>(ograniczenieListVO, HttpStatus.OK);
+        return new ResponseEntity<ZadanieListVO>(zadanieList, HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
@@ -78,7 +66,7 @@ public class ZadaniaController {
     								@RequestParam(required = true, defaultValue = "") String slowa,
     								@RequestParam(required = true) int idZadania,
                                     Locale locale) {
-		ograniczenie.setZadanie(zadanieService.findByIdLike(idZadania));
+		ograniczenie.setZadanie(findByIdLike(idZadania));
 		List<SlowoKluczowe> listSlowaKluczowe = new LinkedList<SlowoKluczowe>();
 		String[] slowaKluczowe = slowa.split(";");
 		for (String s : slowaKluczowe) {
@@ -96,5 +84,32 @@ public class ZadaniaController {
 		} else {
 			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}
+    }
+
+    @Transactional(readOnly = true)
+    public ZadanieListVO findAll(int page, int maxResults) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNumerASC());
+        Page<Zadanie> result = zadanieRepository.findAll(pageRequest);
+        return buildResult(result);
+    }
+    
+    @Transactional(readOnly = true)
+    public ZadanieListVO findByAutorLike(int page, int maxResults, User autor) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNumerASC());
+        Page<Zadanie> result = zadanieRepository.findByAutorLike(pageRequest, autor);
+        return buildResult(result);
+    }
+    
+    @Transactional(readOnly = true)
+    public Zadanie findByIdLike(int id) {
+        return zadanieRepository.findByIdLike(id);
+    }
+
+    private Sort sortByNumerASC() {
+        return new Sort(Sort.Direction.ASC, "numer");
+    }
+
+    private ZadanieListVO buildResult(Page<Zadanie> result) {
+        return new ZadanieListVO(result.getTotalPages(), result.getTotalElements(), result.getContent());
     }
 }

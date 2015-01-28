@@ -1,6 +1,7 @@
 package uaiContacts.service;
 
 import model.entity.Contact;
+import model.repository.ContactRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import uaiContacts.repository.ContactRepository;
 import uaiContacts.vo.ContactListVO;
 
 @Service
