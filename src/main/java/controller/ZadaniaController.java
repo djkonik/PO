@@ -3,6 +3,7 @@ package controller;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
 
 import model.entity.Ograniczenie;
 import model.entity.SlowoKluczowe;
@@ -68,21 +69,20 @@ public class ZadaniaController {
                                     Locale locale) {
 		ograniczenie.setZadanie(findByIdLike(idZadania));
 		List<SlowoKluczowe> listSlowaKluczowe = new LinkedList<SlowoKluczowe>();
-		String[] slowaKluczowe = slowa.split(";");
-		for (String s : slowaKluczowe) {
-			if (!s.isEmpty()) {
-    			SlowoKluczowe slowoKluczowe = new SlowoKluczowe();
-    			slowoKluczowe.setOgraniczenie(ograniczenie);
-    			slowoKluczowe.setSlowo(s);
-    			listSlowaKluczowe.add(slowoKluczowe);
-			}
+		Scanner slowaKluczowe = new Scanner(slowa);
+		while (slowaKluczowe.hasNext()) {
+			SlowoKluczowe slowoKluczowe = new SlowoKluczowe();
+			slowoKluczowe.setOgraniczenie(ograniczenie);
+			slowoKluczowe.setSlowo(slowaKluczowe.next());
+			listSlowaKluczowe.add(slowoKluczowe);
 		}
+		slowaKluczowe.close();
 		ograniczenie.setSlowaKluczowe(listSlowaKluczowe);
 		if (ograniczenie.isValid()) {
-			ograniczenieRepository.save(ograniczenie);
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			ograniczenie = ograniczenieRepository.save(ograniczenie);
+			return new ResponseEntity<Integer>(ograniczenie.getId(), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+			return new ResponseEntity<Integer>(0, HttpStatus.BAD_REQUEST);
 		}
     }
 

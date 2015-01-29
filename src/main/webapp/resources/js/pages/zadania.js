@@ -126,7 +126,7 @@ function zadaniaController($scope, $http) {
 		var noweOgraniczenie = {nazwa: $scope.ograniczenia.nowe.nazwa, jezyk: $scope.ograniczenia.nowe.jezyk};
 		
 		for (var i=0; i<$scope.ograniczenia.nowe.slowaKluczowe.length; i++) {
-			config.params.slowa += ($scope.ograniczenia.nowe.slowaKluczowe[i] + ";");
+			config.params.slowa += ($scope.ograniczenia.nowe.slowaKluczowe[i] + " ");
 		}
 		
 		var ograniczenieInvalid = function() {
@@ -136,9 +136,10 @@ function zadaniaController($scope, $http) {
         	$('#addOgraniczenie').modal('show');
 		}
 		
-		var ograniczenieSaved = function () {
+		var ograniczenieSaved = function (ograniczenieId) {
 			console.log("saved");
 			$("#loadingModal").modal('hide');
+			noweOgraniczenie.id = ograniczenieId;
         	$scope.zadanie.ograniczenia.push(noweOgraniczenie);
         	$scope.ograniczenia.populateTable();
         	$('#editZadaniaModal').modal('show');
@@ -147,8 +148,8 @@ function zadaniaController($scope, $http) {
 		$http.post(url, $.param(noweOgraniczenie), config)
 	        .success(function (data) {
 	        	console.log(data);
-	        	if (data == "true") {
-	        		ograniczenieSaved();
+	        	if (data != 0) {
+	        		ograniczenieSaved(data);
 	        	} else {
 	        		ograniczenieInvalid();
 	        	}
