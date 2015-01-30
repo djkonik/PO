@@ -195,6 +195,7 @@
 		        <div ng-class="{'create-button-noresult': ograniczenia.state == 'noresult', '': ograniczenia.state != 'noresult'}">
 		            <a href="#addOgraniczenie"
 		               role="button"
+		               id="openNoweOgraniczenie"
 		               ng-click="openNoweOgraniczenie();"
 		               ng-class="{'': ograniczenia.state == 'noresult', 'create-button': ograniczenia.state != 'noresult'}"
 		               title="<spring:message code='add'/>&nbsp;<spring:message code='ograniczenie'/>"
