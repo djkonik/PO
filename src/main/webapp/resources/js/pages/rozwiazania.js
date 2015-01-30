@@ -51,7 +51,7 @@ function rozwiazaniaController($scope, $http) {
             	}
             }
 
-            $scope.page = {source: data.rozwiazania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalContacts : data.totalContacts};
+            $scope.page = {source: data.rozwiazania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalCount : data.totalCount};
 
             if($scope.page.pagesCount <= $scope.page.currentPage){
                 $scope.pageToGet = $scope.page.pagesCount - 1;

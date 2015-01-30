@@ -1,22 +1,22 @@
-package uaiContacts.vo;
+package view.dto;
 
 import java.util.List;
 
 import model.entity.Rozwiazanie;
 
-public class RozwiazanieListVO {
+public class RozwiazanieDTO {
     private int pagesCount;
-    private long totalContacts;
+    private long totalCount;
 
     private List<Rozwiazanie> rozwiazania;
 
-    public RozwiazanieListVO() {
+    public RozwiazanieDTO() {
     }
 
-    public RozwiazanieListVO(int pages, long totalContacts, List<Rozwiazanie> rozwiazania) {
+    public RozwiazanieDTO(int pages, long totalCount, List<Rozwiazanie> rozwiazania) {
         this.pagesCount = pages;
         this.rozwiazania = rozwiazania;
-        this.totalContacts = totalContacts;
+        this.totalCount = totalCount;
     }
 
     public int getPagesCount() {
@@ -35,11 +35,11 @@ public class RozwiazanieListVO {
         this.rozwiazania = rozwiazania;
     }
 
-    public long getTotalContacts() {
-        return totalContacts;
+    public long getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotalContacts(long totalContacts) {
-        this.totalContacts = totalContacts;
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
     }
 }

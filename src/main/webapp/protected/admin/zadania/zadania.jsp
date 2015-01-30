@@ -2,16 +2,16 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="row-fluid" ng-controller="rozwiazaniaController">
+<div class="row-fluid" ng-controller="zadaniaController">
     <h2>
         <p class="text-center">
-            <spring:message code='rozwiazania.header'/>
+            <spring:message code='zadania.header'/>
             <a href="#"
-               ng-click="getRozwiazanieList();"
+               ng-click="getZadanieList();"
                id="contactsHeaderButton"
                role="button"
                ng-class="{'': displaySearchButton == true, 'none': displaySearchButton == false}"
-               title="<spring:message code="search"/>&nbsp;<spring:message code="contact"/>"
+               title="<spring:message code="search"/>&nbsp;<spring:message code="zadanie"/>"
                class="btn btn-inverse" data-toggle="modal">
                 <i class="icon-refresh"></i>
             </a>
@@ -20,13 +20,13 @@
     <h4>
         <div ng-class="{'': state == 'list', 'none': state != 'list'}">
             <p class="text-center">
-                <spring:message code="message.total.records.found"/>:&nbsp;{{page.totalContacts}}
+                <spring:message code="message.total.records.found"/>:&nbsp;{{page.totalCount}}
             </p>
         </div>
     </h4>
 
     <div>
-        <div id="loadingModal" class="modal hide fade in centering"
+        <div id="loadingModal" class="modal hide in centering"
              role="dialog"
              aria-labelledby="deleteContactsModalLabel" aria-hidden="true">
             <div id="divLoadingIcon" class="text-center">
@@ -47,51 +47,40 @@
         </div>
 
         <div ng-class="{'alert alert-info': state == 'noresult', 'none': state != 'noresult'}">
-            <h4><i class="icon-info-sign"></i> <spring:message code="rozwiazania.emptyData"/></h4><br/>
+            <h4><i class="icon-info-sign"></i> <spring:message code="contacts.emptyData"/></h4><br/>
 
-            <p><spring:message code="rozwiazania.emptyData.text"/></p>
+            <p><spring:message code="contacts.emptyData.text"/></p>
         </div>
 
         <div id="gridContainer" ng-class="{'': state == 'list', 'none': state != 'list'}">
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th scope="col"><spring:message code="rozwiazania.nr_zadania"/></th>
-                    <th scope="col"><spring:message code="rozwiazania.czas_przeslania"/></th>
-                    <th scope="col"><spring:message code="rozwiazania.status"/></th>
-                    <th scope="col"><spring:message code="rozwiazania.ocena"/></th>
+                    <th scope="col"><spring:message code="zadania.nr_zadania"/></th>
+                    <th scope="col"><spring:message code="zadania.tytul"/></th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="rozwiazanie in page.source">
-                    <td class="tdContactsCentered">{{rozwiazanie.nrZadania}}</td>
-                    <td class="tdContactsCentered">{{rozwiazanie.czasPrzeslania}}</td>
-                    <td class="tdContactsCentered">{{rozwiazanie.czySprawdzone}}</td>
-                    <td class="tdContactsCentered">{{rozwiazanie.czyZatwierdzone}}</td>
+                <tr ng-repeat="zadanie in page.source">
+                    <td class="tdContactsCentered">{{zadanie.numer}}</td>
+                    <td class="tdContactsCentered">{{zadanie.tytul}}</td>
                     <td class="width15">
                         <div class="text-center">
-                            <input type="hidden" value="{{rozwiazanie.id}}"/>
-                            <a href="#detailsRozwiazaniaModal"
-                               ng-click="selectedRozwiazanie(rozwiazanie);"
+                            <input type="hidden" value="{{zadanie.id}}"/>
+                            <a href="#editZadaniaModal"
+                               ng-click="selectedZadanie(zadanie);"
                                role="button"
-                               title="<spring:message code="details"/>&nbsp;rozwiązania"
+                               title="Edytuj zadanie"
                                class="btn btn-inverse" data-toggle="modal">
-                                <i class="icon-search"></i>
+                                <i class="icon-edit"></i>
                             </a>
                             <a href="#"
                                ng-click="todo();"
                                role="button"
-                               title="Przejdź do zadania"
+                               title="Usuń zadanie"
                                class="btn btn-inverse" data-toggle="modal">
-                                <i class="icon-file"></i>
-                            </a>
-                            <a href="#"
-                               ng-click="todo();"
-                               role="button"
-                               title="Zadaj pytanie"
-                               class="btn btn-inverse" data-toggle="modal">
-                                <i class="icon-comment"></i>
+                                <i class="icon-minus"></i>
                             </a>
                         </div>
                     </td>
@@ -138,17 +127,17 @@
             <a href="#"
                role="button"
                ng-click="todo();"
-               title="<spring:message code='create'/>&nbsp;<spring:message code='contact'/>"
+               title="<spring:message code='add'/>&nbsp;<spring:message code='zadanie'/>"
                class="btn btn-inverse"
                data-toggle="modal">
                 <i class="icon-plus"></i>
-                &nbsp;&nbsp;<spring:message code="add"/>&nbsp;<spring:message code="rozwiazanie"/>
+                &nbsp;&nbsp;<spring:message code="add"/>&nbsp;<spring:message code="zadanie"/>
             </a>
         </div>
 
-        <jsp:include page="dialogs/rozwiazaniaDialogs.jsp"/>
+        <jsp:include page="dialogs/zadaniaDialogs.jsp"/>
 
     </div>
 </div>
 
-<script src="<c:url value="/resources/js/pages/rozwiazania.js" />"></script>
+<script src="<c:url value="/resources/js/pages/zadania.js" />"></script>

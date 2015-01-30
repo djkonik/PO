@@ -42,8 +42,11 @@ public class Rozwiazanie {
 	@Column
 	private String przyczyna;
 	
-	@Column
-	private int nrZadania;
+	@JsonBackReference 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
+	@JoinColumn(name = "zadanie", insertable=false, updatable=false)
+    private Zadanie zadanie;
 	
 	@JsonBackReference 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -53,14 +56,14 @@ public class Rozwiazanie {
 	
 	public Rozwiazanie(Date czasPrzeslania, boolean czySprawdzone,
 			boolean czyZatwierdzone, String jezyk, String kod,
-			String przyczyna, int nrZadania) {
+			String przyczyna, Zadanie zadanie) {
 		this.czasPrzeslania = czasPrzeslania;
 		this.czySprawdzone = czySprawdzone;
 		this.czyZatwierdzone = czyZatwierdzone;
 		this.jezyk = jezyk;
 		this.kod = kod;
 		this.przyczyna = przyczyna;
-		this.nrZadania = nrZadania;
+		this.zadanie = zadanie;
 	}
 
 	public Date getCzasPrzeslania() {
@@ -123,13 +126,13 @@ public class Rozwiazanie {
 	}
 
 
-	public int getNrZadania() {
-		return nrZadania;
+	public Zadanie getZadanie() {
+		return zadanie; 
 	}
 
 
-	public void setNrZadania(int nrZadania) {
-		this.nrZadania = nrZadania;
+	public void setZadanie(Zadanie zadanie) {
+		this.zadanie = zadanie;
 	}
 
 
@@ -150,8 +153,8 @@ public class Rozwiazanie {
     @Override
     public boolean equals(Object object) {
         if (object instanceof Rozwiazanie){
-            Rozwiazanie contact = (Rozwiazanie) object;
-            return contact.id == id;
+            Rozwiazanie rozwiazanie = (Rozwiazanie) object;
+            return rozwiazanie.id == id;
         }
 
         return false;

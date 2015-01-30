@@ -1,25 +1,25 @@
-package uaiContacts.vo;
+package view.dto;
 
 import java.util.List;
 
-import model.entity.Contact;
+import model.entity.Ograniczenie;
 
-public class ContactListVO {
+public class OgraniczenieDTO {
     private int pagesCount;
-    private long totalContacts;
+    private long totalCount;
 
     private String actionMessage;
     private String searchMessage;
 
-    private List<Contact> contacts;
+    private List<Ograniczenie> ograniczenia;
 
-    public ContactListVO() {
+    public OgraniczenieDTO() {
     }
 
-    public ContactListVO(int pages, long totalContacts, List<Contact> contacts) {
+    public OgraniczenieDTO(int pages, long totalCount, List<Ograniczenie> ograniczenia) {
         this.pagesCount = pages;
-        this.contacts = contacts;
-        this.totalContacts = totalContacts;
+        this.ograniczenia = ograniczenia;
+        this.totalCount = totalCount;
     }
 
     public int getPagesCount() {
@@ -30,20 +30,20 @@ public class ContactListVO {
         this.pagesCount = pagesCount;
     }
 
-    public List<Contact> getContacts() {
-        return contacts;
+    public List<Ograniczenie> getOgraniczenia() {
+        return ograniczenia;
     }
 
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
+    public void setOgraniczenia(List<Ograniczenie> ograniczenia) {
+        this.ograniczenia = ograniczenia;
     }
 
-    public long getTotalContacts() {
-        return totalContacts;
+    public long getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotalContacts(long totalContacts) {
-        this.totalContacts = totalContacts;
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
     }
 
     public String getActionMessage() {

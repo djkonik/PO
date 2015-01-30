@@ -43,7 +43,7 @@
                         <input type="text"
                                required
                                readonly
-                               ng-model="rozwiazanie.nrZadania"
+                               ng-model="rozwiazanie.zadanie.numer"
                                name="nrZadania" />
                     </div>
                 </div>

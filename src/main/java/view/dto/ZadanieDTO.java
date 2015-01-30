@@ -1,22 +1,22 @@
-package uaiContacts.vo;
+package view.dto;
 
 import java.util.List;
 
 import model.entity.Zadanie;
 
-public class ZadanieListVO {
+public class ZadanieDTO {
     private int pagesCount;
-    private long totalContacts;
+    private long totalCount;
 
     private List<Zadanie> zadania;
 
-    public ZadanieListVO() {
+    public ZadanieDTO() {
     }
 
-    public ZadanieListVO(int pages, long totalContacts, List<Zadanie> zadania) {
+    public ZadanieDTO(int pages, long totalCount, List<Zadanie> zadania) {
         this.pagesCount = pages;
         this.zadania = zadania;
-        this.totalContacts = totalContacts;
+        this.totalCount = totalCount;
     }
 
     public int getPagesCount() {
@@ -35,12 +35,12 @@ public class ZadanieListVO {
         this.zadania = zadania;
     }
 
-    public long getTotalContacts() {
-        return totalContacts;
+    public long getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotalContacts(long totalContacts) {
-        this.totalContacts = totalContacts;
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
     }
 
 }

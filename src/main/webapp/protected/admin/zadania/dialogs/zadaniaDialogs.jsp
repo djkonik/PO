@@ -23,7 +23,7 @@
 </style>
 
 <div id="editZadaniaModal"
-     class="modal hide fade in centering detailsDialog"
+     class="modal hide in centering detailsDialog"
      role="dialog"
      aria-labelledby="updateContactsModalLabel"
      aria-hidden="true">
@@ -137,7 +137,7 @@
 		                    <td class="tdContactsCentered">{{ograniczenie.jezyk}}</td>
 		                    <td class="width15">
 		                        <div class="text-center">
-		                            <input type="hidden" value="{{contact.id}}"/>
+		                            <input type="hidden" value="{{ograniczenie.id}}"/>
 		                            <a href="#"
 		                               ng-click="todo();"
 		                               role="button"
@@ -212,7 +212,7 @@
 </div>
 
 <div id="addOgraniczenie"
-     class="modal hide fade in centering "
+     class="modal hide in centering "
      ng-class="{'small-details-dialog': !displayValidationError, 'small-details-dialog-message': displayValidationError}"
      role="dialog"
      aria-labelledby="updateContactsModalLabel"

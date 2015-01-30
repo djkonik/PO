@@ -37,7 +37,7 @@ function zadaniaController($scope, $http) {
         if (data.pagesCount > 0) {
             $scope.state = 'list';
 
-            $scope.page = {source: data.zadania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalContacts : data.totalContacts};
+            $scope.page = {source: data.zadania, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalCount : data.totalCount};
 
             if($scope.page.pagesCount <= $scope.page.currentPage){
                 $scope.pageToGet = $scope.page.pagesCount - 1;
@@ -100,7 +100,7 @@ function zadaniaController($scope, $http) {
         if ($scope.zadanie.ograniczenia.length > 0) {
             $scope.ograniczenia.state = 'list';
             
-            $scope.ograniczenia.page = {source: $scope.zadanie.ograniczenia.slice($scope.ograniczenia.pageToGet*5, ($scope.ograniczenia.pageToGet + 1)*5), currentPage: $scope.ograniczenia.pageToGet, pagesCount: Math.ceil($scope.zadanie.ograniczenia.length/5), totalContacts : $scope.zadanie.ograniczenia.length};
+            $scope.ograniczenia.page = {source: $scope.zadanie.ograniczenia.slice($scope.ograniczenia.pageToGet*5, ($scope.ograniczenia.pageToGet + 1)*5), currentPage: $scope.ograniczenia.pageToGet, pagesCount: Math.ceil($scope.zadanie.ograniczenia.length/5), totalCount : $scope.zadanie.ograniczenia.length};
             if($scope.ograniczenia.page.pagesCount <= $scope.ograniczenia.page.currentPage){
                 $scope.ograniczenia.pageToGet = $scope.ograniczenia.page.pagesCount - 1;
                 $scope.ograniczenia.page.currentPage = $scope.ograniczenia.page.pagesCount - 1;

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import uaiContacts.vo.ZadanieListVO;
+import view.dto.ZadanieDTO;
 
 
 @Controller
@@ -55,11 +55,11 @@ public class ZadaniaController {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> listAll(@RequestParam int page, Locale locale) {
-        ZadanieListVO zadanieList = null;
+        ZadanieDTO zadanieList = null;
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         zadanieList = findByAutorLike(page, maxResults, userRepository.findByEmail(user));
 
-        return new ResponseEntity<ZadanieListVO>(zadanieList, HttpStatus.OK);
+        return new ResponseEntity<ZadanieDTO>(zadanieList, HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
@@ -87,14 +87,14 @@ public class ZadaniaController {
     }
 
     @Transactional(readOnly = true)
-    public ZadanieListVO findAll(int page, int maxResults) {
+    public ZadanieDTO findAll(int page, int maxResults) {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNumerASC());
         Page<Zadanie> result = zadanieRepository.findAll(pageRequest);
         return buildResult(result);
     }
     
     @Transactional(readOnly = true)
-    public ZadanieListVO findByAutorLike(int page, int maxResults, User autor) {
+    public ZadanieDTO findByAutorLike(int page, int maxResults, User autor) {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNumerASC());
         Page<Zadanie> result = zadanieRepository.findByAutorLike(pageRequest, autor);
         return buildResult(result);
@@ -109,7 +109,7 @@ public class ZadaniaController {
         return new Sort(Sort.Direction.ASC, "numer");
     }
 
-    private ZadanieListVO buildResult(Page<Zadanie> result) {
-        return new ZadanieListVO(result.getTotalPages(), result.getTotalElements(), result.getContent());
+    private ZadanieDTO buildResult(Page<Zadanie> result) {
+        return new ZadanieDTO(result.getTotalPages(), result.getTotalElements(), result.getContent());
     }
 }

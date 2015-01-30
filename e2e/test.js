@@ -39,7 +39,7 @@ describe('create new ograniczenie - ', function() {
 	logIn();
 	
     selectedPage = ptor.findElement(by.css('.navbar .active p'));
-    expect(selectedPage.getText()).toEqual('Home');
+    expect(selectedPage.getText()).toEqual('Informacje');
 	
 	ptor.get('http://localhost:8080/uaiContacts/protected/rozwiazania');
 	waitForSplashToDisappear();
@@ -74,26 +74,29 @@ describe('create new ograniczenie - ', function() {
 	
 	saveButton.click();
 	waitForSplashToDisappear();
-	expect(alert.isDisplayed()).toBeTruthy;
+	waitForElementToShow(by.id('addOgraniczenie'));
+	expect(alert.isDisplayed()).toEqual(true);
 	
 	waitForElementToShow(by.css('[ng-model="ograniczenia.nowe.nazwa"]'));
 	ptor.findElement(by.css('[ng-model="ograniczenia.nowe.nazwa"]')).sendKeys('nazwa');
 	saveButton.click();
 	waitForSplashToDisappear();
-	expect(alert.isDisplayed()).toBeTruthy;
+	waitForElementToShow(by.id('addOgraniczenie'));
+	expect(alert.isDisplayed()).toEqual(true);
 	
 	waitForElementToShow(by.css('[ng-model="ograniczenia.nowe.jezyk"]'));
 	ptor.findElement(by.css('[ng-model="ograniczenia.nowe.jezyk"]')).sendKeys('Java');
 	saveButton.click();
 	waitForSplashToDisappear();
-	expect(alert.isDisplayed()).toBeTruthy;
+	waitForElementToShow(by.id('addOgraniczenie'));
+	expect(alert.isDisplayed()).toEqual(true);
 	
 	waitForElementToShow(by.css('[ng-model="ograniczenia.nowe.noweSlowoKluczowe"]'));
 	ptor.findElement(by.css('[ng-model="ograniczenia.nowe.noweSlowoKluczowe"]')).sendKeys('slowoKluczowe');
 	ptor.findElement(by.css('[ng-click="dodajSlowoKluczowe();"]')).click();
 	saveButton.click();
 	waitForSplashToDisappear();
-	expect(alert.isDisplayed()).not.toBeTruthy;
+	expect(alert.isDisplayed()).toEqual(false);
 	
 	logOut();
   });

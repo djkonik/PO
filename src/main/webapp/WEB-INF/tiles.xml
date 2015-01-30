@@ -13,14 +13,11 @@
     <definition name="welcomePage" extends="master.page">
         <put-attribute name="body" value="/protected/welcomePage.jsp"/>
     </definition>
-    <definition name="contactsList" extends="master.page">
-        <put-attribute name="body" value="/protected/contacts/contacts.jsp"/>
-    </definition>
     <definition name="rozwiazaniaList" extends="master.page">
-        <put-attribute name="body" value="/protected/rozwiazania/rozwiazania.jsp"/>
+        <put-attribute name="body" value="/protected/user/rozwiazania/rozwiazania.jsp"/>
     </definition>
     <definition name="zadaniaList" extends="master.page">
-        <put-attribute name="body" value="/protected/zadania/zadania.jsp"/>
+        <put-attribute name="body" value="/protected/admin/zadania/zadania.jsp"/>
     </definition>
     <definition name="login" extends="master.page">
         <put-attribute name="header" value=""/>

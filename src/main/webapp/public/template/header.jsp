@@ -18,7 +18,6 @@
                             <p><spring:message code="header.home"/></p>
                         </a>
                     </li>
-                    <li ng-class="{'active': activeURL == 'contacts', '': activeURL != 'contacts'}"><a title='<spring:message code="header.contacts"/>' href="<c:url value='/protected/contacts'/>"><p><spring:message code="header.contacts"/></p></a></li>
                     <li ng-class="{'active': activeURL == 'rozwiazania', '': activeURL != 'rozwiazania'}"><a title='<spring:message code="header.rozwiazania"/>' href="<c:url value='/protected/rozwiazania'/>"><p><spring:message code="header.rozwiazania"/></p></a></li>
                     <li ng-class="{'active': activeURL == 'zadania', '': activeURL != 'zadania'}"><a title='<spring:message code="header.zadania"/>' href="<c:url value='/protected/zadania'/>"><p><spring:message code="header.zadania"/></p></a></li>
                 </ul>

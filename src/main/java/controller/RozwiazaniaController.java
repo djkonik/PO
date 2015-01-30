@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import uaiContacts.vo.RozwiazanieListVO;
+import view.dto.RozwiazanieDTO;
 
 @Controller
 @RequestMapping(value = "/protected/rozwiazania")
@@ -47,19 +47,19 @@ public class RozwiazaniaController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> listAll(@RequestParam int page, Locale locale) {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
-        RozwiazanieListVO rozwiazanieListVO = findByAutorLike(page, maxResults, userRepository.findByEmail(user));
-        return new ResponseEntity<RozwiazanieListVO>(rozwiazanieListVO, HttpStatus.OK);
+        RozwiazanieDTO rozwiazanieListVO = findByAutorLike(page, maxResults, userRepository.findByEmail(user));
+        return new ResponseEntity<RozwiazanieDTO>(rozwiazanieListVO, HttpStatus.OK);
     }
     
     @Transactional(readOnly = true)
-    private RozwiazanieListVO findAll(int page, int maxResults) {
+    private RozwiazanieDTO findAll(int page, int maxResults) {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaDESC());
         Page<Rozwiazanie> result =  rozwiazanieRepository.findAll(pageRequest);
         return buildResult(result);
     }
     
     @Transactional(readOnly = true)
-    private RozwiazanieListVO findByAutorLike(int page, int maxResults, User autor) {
+    private RozwiazanieDTO findByAutorLike(int page, int maxResults, User autor) {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByCzasPrzeslaniaDESC());
         Page<Rozwiazanie> result =  rozwiazanieRepository.findByAutorLike(pageRequest, autor);
         return buildResult(result);
@@ -69,8 +69,8 @@ public class RozwiazaniaController {
         return new Sort(Sort.Direction.DESC, "czasPrzeslania");
     }
 
-    private RozwiazanieListVO buildResult(Page<Rozwiazanie> result) {
-        return new RozwiazanieListVO(result.getTotalPages(), result.getTotalElements(), result.getContent());
+    private RozwiazanieDTO buildResult(Page<Rozwiazanie> result) {
+        return new RozwiazanieDTO(result.getTotalPages(), result.getTotalElements(), result.getContent());
     }
 
 }
